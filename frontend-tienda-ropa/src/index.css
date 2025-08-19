@@ -1,10 +1,910 @@
-/* Opcional: Fuente Inter - ¡DEBE IR PRIMERO! */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* --- Variables CSS mejoradas y ampliadas para mayor control --- */
+:root {
+  /* Fuentes */
+  --font-family-sans: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family-mono: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+  /* Colores de la aplicación general */
+  --color-primary: #3b82f6;       /* Azul brillante y moderno */
+  --color-primary-dark: #2563eb;
+  --color-primary-light: #60a5fa;
+  --color-accent: #8b5cf6;
+
+  --color-text-dark: #1f2937;
+  --color-text-medium: #4b5563;
+  --color-text-light: #9ca3af;
+  --color-text-on-primary: #ffffff;
+
+  --color-bg-light: #f3f4f6;
+  --color-bg-card: #ffffff;
+  --color-bg-input: #ffffff;
+  --color-bg-alt: #e5e7eb;
+  --color-bg-medium: #e0e7f7; /* Un azul claro para hover en tablas */
+
+  --color-border-default: #e5e7eb;
+  --color-border-input-focus: var(--color-primary-light);
+
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Tipografía */
+  --font-size-base: 16px;
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-md: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.5rem;   /* 24px */
+  --font-size-2xl: 2rem;    /* 32px */
+  --font-size-3xl: 2.5rem;  /* 40px */
+
+  /* Espaciado */
+  --spacing-xs: 0.25rem;  /* 4px */
+  --spacing-sm: 0.5rem;   /* 8px */
+  --spacing-md: 1rem;     /* 16px */
+  --spacing-lg: 1.5rem;   /* 24px */
+  --spacing-xl: 2rem;     /* 32px */
+  --spacing-2xl: 3rem;    /* 48px */
+
+  /* Transiciones */
+  --transition-fast: all 0.15s ease-out;
+  --transition-normal: all 0.25s ease-in-out;
+
+  /* --- Variables Específicas del Login (basadas en la imagen de ejemplo) --- */
+  --login-bg-dark: #2d2d2d; /* Fondo oscuro del body para el login */
+  --login-card-bg: #ffffff; /* Fondo de la tarjeta de login */
+  --login-header-bg: #007bff; /* Azul de la cabecera del login */
+  --login-header-bg-gradient-start: #007bff; /* Gradiente de la cabecera del login */
+  --login-header-bg-gradient-end: #0056b3; /* Gradiente de la cabecera del login */
+  --login-header-text: #ffffff; /* Color de texto de la cabecera del login */
+  --login-input-bg: #ffffff; /* Fondo de los inputs del login */
+  --login-input-border: #e0e0e0; /* Borde de los inputs del login */
+  --login-input-placeholder: #a0a0a0; /* Placeholder de los inputs del login */
+  --login-input-icon-color: #888888; /* Color de los íconos de los inputs */
+  --login-button-gradient-start: #007bff; /* Gradiente del botón de login */
+  --login-button-gradient-end: #0056b3; /* Gradiente del botón de login */
+  --login-button-hover-start: #0056b3;
+  --login-button-hover-end: #004085;
+  --login-link-color: #007bff; /* Color de los enlaces del login */
+  --login-link-hover-color: #0056b3;
+}
+
+/* --- Estilos Globales (Base) --- */
+html, body {
+  height: 100%; /* Asegura que html y body ocupen toda la altura */
+}
 
 body {
-  font-family: 'Inter', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centrar verticalmente por defecto */
+  min-height: 100vh;
+  padding: var(--spacing-xl);
+  background-color: var(--color-bg-light); /* Por defecto, el fondo claro de la app */
+  overflow-y: auto;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--color-text-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Estilos específicos para el fondo del login */
+body.login-background {
+    background-color: var(--login-bg-dark); /* Fondo oscuro para la pantalla de login */
+    align-items: center; /* Asegura el centrado vertical para el login */
+}
+
+/* Contenedor principal de la aplicación (cuando está logueado) */
+#root-app-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+    background-color: var(--color-bg-light); /* Fondo de la app cuando logueado */
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+}
+
+/* --- Estilos del Formulario de Login (basado en la imagen de ejemplo) --- */
+.login-card-wrapper {
+    width: 100%;
+    max-width: 400px; /* Ancho fijo para el formulario de login */
+    margin: 0 auto; /* Centrar el wrapper */
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-lg); /* Bordes redondeados del contenedor exterior */
+    overflow: hidden; /* Para que el header redondeado no se salga */
+    box-shadow: var(--shadow-xl); /* Sombra para el login card */
+    background-color: var(--login-card-bg); /* Fondo blanco de la tarjeta */
+}
+
+.login-header-bar {
+    background: linear-gradient(to right, var(--login-header-bg-gradient-start), var(--login-header-bg-gradient-end));
+    color: var(--login-header-text);
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    text-align: center;
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    position: relative;
+    z-index: 1; /* Para que esté por encima del contenido */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* Altura fija para la barra superior */
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.login-header-bar .close-icon { /* Estilo para el icono de cerrar (si se añade) */
+    position: absolute;
+    right: var(--spacing-md);
+    cursor: pointer;
+    color: var(--login-header-text);
+    font-size: var(--font-size-xl);
+}
+
+.login-form-content {
+    padding: var(--spacing-xl); /* Padding interno del formulario */
+    background-color: var(--login-card-bg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg); /* Espacio entre grupos de input */
+}
+
+.login-input-group {
+    position: relative;
+    margin-bottom: var(--spacing-md);
+}
+
+.login-input-group .input-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--login-input-icon-color);
+    font-size: var(--font-size-lg);
+    pointer-events: none; /* Para que no interfiera con el input */
+}
+
+.login-input-field {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem; /* Padding a la izquierda para el icono */
+    border: 1px solid var(--login-input-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-md);
+    color: var(--color-text-dark);
+    background-color: var(--login-input-bg);
+    transition: var(--transition-normal);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.login-input-field::placeholder {
+    color: var(--login-input-placeholder);
+}
+
+.login-input-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.login-checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    color: var(--color-text-medium);
+}
+
+.login-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.login-checkbox-checkmark {
+    height: 18px;
+    width: 18px;
+    background-color: var(--login-input-bg);
+    border: 1px solid var(--login-input-border);
+    border-radius: var(--radius-sm);
+    margin-right: var(--spacing-sm);
+    transition: var(--transition-fast);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-checkbox-container input:checked ~ .login-checkbox-checkmark {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.login-checkbox-checkmark:after {
+    content: "";
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: var(--transition-fast);
+}
+
+.login-checkbox-container input:checked ~ .login-checkbox-checkmark:after {
+    opacity: 1;
+}
+
+.login-checkbox-container:hover .login-checkbox-checkmark {
+    border-color: var(--color-primary);
+}
+
+.login-link {
+    color: var(--login-link-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition-fast);
+}
+
+.login-link:hover {
+    color: var(--login-link-hover-color);
+    text-decoration: underline;
+}
+
+.login-button-main {
+    background: linear-gradient(to right, var(--login-button-gradient-start), var(--login-button-gradient-end));
+    color: var(--color-text-on-primary);
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    width: 100%;
+    box-shadow: var(--shadow-md);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.login-button-main:hover {
+    background: linear-gradient(to right, var(--login-button-hover-start), var(--login-button-hover-end));
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+}
+
+.login-button-main:active {
+    box-shadow: var(--shadow-sm);
+    transform: translateY(0);
+}
+
+.login-button-main:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+.login-footer-links {
+    margin-top: var(--spacing-lg);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-medium);
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+/* --- Títulos y texto (generales de la app, no login) --- */
+h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+h2 {
+    font-size: 2rem;
+    color: var(--color-text-default);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+p {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* --- Botones (generales de la app, no login) --- */
+button {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+  padding: 0.85rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  margin-top: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+button:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Contenedores de tarjeta (cards generales de la app) */
+.card {
+  background-color: white;
+  border: 1px solid var(--color-border-default); /* Usar la variable correcta */
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  margin-top: 2rem;
+  box-shadow: var(--shadow-lg);
+  text-align: left;
+}
+
+/* Mensajes de notificación (generales de la app) */
+.message {
+    padding: 1.25rem 2rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.message .message-content { /* Para el contenido del mensaje */
+    flex-grow: 1; /* Para que ocupe el espacio disponible */
+}
+
+
+.message.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.message.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+/* Estilos para el indicador de carga */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    margin-top: 2rem;
+    font-weight: 500;
+}
+
+.spinner {
+    border: 4px solid var(--color-border-default); /* Usar la variable correcta */
+    border-top: 4px solid var(--color-primary);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Contenedor Principal de la Aplicación (cuando logueado) --- */
+/* (Ya definido arriba, solo para referencia) */
+/* #root-app-container { ... } */
+
+/* --- Títulos de Sección (ej. "Gestión de Ventas") --- */
+.app-title { /* Título principal de la aplicación */
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-text-dark);
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+    line-height: 1.2;
+}
+
+.nav-buttons-container { /* Barra de navegación superior */
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-2xl);
+    padding: var(--spacing-sm);
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border-default);
+}
+
+.nav-button { /* Botones de navegación */
+    background-color: var(--color-bg-light);
+    color: var(--color-text-medium);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.nav-button:hover {
+    background-color: var(--color-bg-alt);
+    color: var(--color-text-dark);
+}
+
+.nav-button.active {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-button.active:hover {
+    background-color: var(--color-primary-dark);
+    color: var(--color-text-on-primary);
+}
+
+.section-title { /* Títulos de secciones como "Gestión de Ventas" */
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text-dark);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-subtitle { /* Subtítulos dentro de las tarjetas */
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--color-text-dark);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Contenedor General de Formulario/Sección (como la caja de "Registrar Nueva Venta") */
+.card-section {
+    background-color: var(--color-bg-card);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border-default);
+    margin-bottom: var(--spacing-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* Estilos para cuadrículas de formularios (ej. 2 columnas) */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Por defecto una columna */
+    gap: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+    }
+}
+
+/* Estilos para Inputs de Formulario (generales de la app) */
+.form-group {
+    margin-bottom: var(--spacing-md);
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-medium);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-md);
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-input);
+    transition: var(--transition-normal);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.form-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--spacing-md) center;
+    background-size: 1.25em auto;
+    padding-right: var(--spacing-2xl);
+}
+
+.form-group input::placeholder {
+    color: var(--color-text-light);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Botones de Acción (generales de la app) --- */
+.action-button {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    width: 100%;
+    box-shadow: var(--shadow-md);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.action-button:hover {
+    background-color: var(--color-primary-dark);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+}
+
+.action-button:active {
+    background-color: var(--color-primary-dark);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(0);
+}
+
+.action-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+.action-button.secondary-button { /* Para botones como "Cancelar Edición" */
+    background-color: var(--color-bg-alt);
+    color: var(--color-text-medium);
+    box-shadow: none;
+}
+.action-button.secondary-button:hover {
+    background-color: var(--color-border-default);
+    color: var(--color-text-dark);
+    box-shadow: var(--shadow-sm);
+}
+
+
+/* --- Estilos para Tablas --- */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: var(--spacing-xl);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--color-bg-card);
+    padding: var(--spacing-lg);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+}
+
+th, td {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 1px solid var(--color-border-default);
+    color: var(--color-text-dark);
+}
+
+th {
+    background-color: var(--color-bg-alt);
+    color: var(--color-text-medium);
+    font-weight: 600;
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.05em;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--color-bg-card);
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--color-bg-light);
+}
+
+tbody tr:hover {
+    background-color: var(--color-bg-medium);
+    transition: var(--transition-normal);
+}
+tbody tr:hover th, tbody tr:hover td {
+    border-color: var(--color-primary);
+}
+
+/* Estilos para los botones dentro de la tabla */
+td .table-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    margin-right: var(--spacing-sm);
+    min-width: 80px;
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+}
+
+td .table-button:last-child {
+    margin-right: 0;
+}
+
+.table-button.edit {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+}
+
+.table-button.edit:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.table-button.delete {
+    background-color: var(--color-danger);
+    color: var(--color-text-on-primary);
+}
+
+.table-button.delete:hover {
+    background-color: #c82333;
+}
+
+/* --- Responsive y Modo Oscuro (Ajustes) --- */
+@media (max-width: 768px) {
+    #root-app-container {
+        padding: var(--spacing-lg);
+        gap: var(--spacing-xl);
+    }
+    .app-title {
+        font-size: var(--font-size-2xl);
+    }
+    .section-title {
+        font-size: var(--font-size-xl);
+    }
+    .card-section {
+        padding: var(--spacing-xl);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+    }
+    .table-container {
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+    }
+    th, td {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-sm);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #60a5fa;
+    --color-primary-dark: #3b82f6;
+    --color-primary-light: #93c5fd;
+
+    --color-text-dark: #e5e7eb;
+    --color-text-medium: #a1a1aa;
+    --color-text-light: #71717a;
+    --color-text-on-primary: #1f2937;
+
+    --color-bg-light: #18181b;
+    --color-bg-card: #27272a;
+    --color-bg-input: #3f3f46;
+    --color-bg-alt: #3f3f46;
+    --color-bg-medium: #3f3f46;
+
+
+    --color-border-default: #52525b;
+    --color-border-input-focus: var(--color-primary);
+
+    /* Variables Dark Mode para el Login */
+    --login-bg-dark: #1a1a1a;
+    --login-card-bg: #2d2d2d;
+    --login-header-bg: #0056b3;
+    --login-header-bg-gradient-start: #0056b3;
+    --login-header-bg-gradient-end: #004085;
+    --login-header-text: #e5e7eb;
+    --login-input-bg: #3f3f46;
+    --login-input-border: #52525b;
+    --login-input-placeholder: #71717a;
+    --login-input-icon-color: #a1a1aa;
+    --login-button-gradient-start: #0056b3;
+    --login-button-gradient-end: #004085;
+    --login-button-hover-start: #007bff;
+    --login-button-hover-end: #0056b3;
+    --login-link-color: #60a5fa;
+    --login-link-hover-color: #93c5fd;
+  }
+
+  /* Ajustes para el modo oscuro */
+  body.login-background {
+      background-color: var(--login-bg-dark);
+  }
+
+  .app-title, .section-title {
+      color: var(--color-text-dark);
+  }
+
+  .nav-buttons-container, .card-section, .table-container {
+      background-color: var(--color-bg-card);
+      border-color: var(--color-border-default);
+      box-shadow: var(--shadow-lg);
+  }
+
+  .nav-button {
+      background-color: var(--color-bg-alt);
+      color: var(--color-text-medium);
+  }
+
+  .nav-button:hover {
+      background-color: var(--color-border-default);
+      color: var(--color-text-dark);
+  }
+
+  .nav-button.active {
+      background-color: var(--color-primary-dark);
+      color: var(--color-text-on-primary);
+  }
+
+  .message.success {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: var(--color-success);
+      border-color: var(--color-success);
+  }
+
+  .message.error {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: var(--color-danger);
+      border-color: var(--color-danger);
+  }
+
+  .form-group input, .form-group select {
+      background-color: var(--color-bg-input);
+      border-color: var(--color-border-default);
+      color: var(--color-text-dark);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  .form-group input:focus, .form-group select:focus {
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  .form-group input::placeholder {
+      color: var(--color-text-light);
+  }
+  .form-group label {
+      color: var(--color-text-medium);
+  }
+
+  th, td {
+      border-color: var(--color-border-default);
+      color: var(--color-text-dark);
+  }
+  th {
+      background-color: var(--color-bg-darker);
+      color: var(--color-text-medium);
+  }
+
+  tbody tr:nth-child(odd) {
+      background-color: var(--color-bg-card);
+  }
+
+  tbody tr:nth-child(even) {
+      background-color: var(--color-bg-dark);
+  }
+  tbody tr:hover {
+      background-color: var(--color-primary-dark);
+      color: var(--color-text-on-primary);
+  }
+  tbody tr:hover th, tbody tr:hover td {
+      border-color: var(--color-primary-light);
+  }
+
+
+  .action-button {
+      background-color: var(--color-primary-light);
+      color: var(--color-text-dark);
+      box-shadow: var(--shadow-md);
+  }
+  .action-button:hover {
+      background-color: var(--color-primary);
+      box-shadow: var(--shadow-lg);
+  }
+
+  .table-button.edit {
+      background-color: var(--color-primary);
+      color: var(--color-text-on-primary);
+  }
+  .table-button.edit:hover {
+      background-color: var(--color-primary-dark);
+  }
+  .table-button.delete {
+      background-color: var(--color-danger);
+      color: var(--color-text-on-primary);
+  }
+  .table-button.delete:hover {
+      background-color: #dc3545;
+  }
 }
